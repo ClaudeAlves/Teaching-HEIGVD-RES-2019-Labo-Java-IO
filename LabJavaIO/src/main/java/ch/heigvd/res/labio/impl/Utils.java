@@ -19,8 +19,14 @@ public class Utils {
    * the line separator, the second element is the remaining text. If the argument does not
    * contain any line separator, then the first element is an empty string.
    */
+  private static final String[] SEPARATORS = new String[] { "\r\n", "\n", "\r"};
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(String s : SEPARATORS){
+      if(lines.contains(s)) {
+        return new String[]{lines.substring(0, lines.indexOf(s) + s.length()), lines.substring(lines.indexOf(s) + s.length())};
+      }
+    }
+    return new String[] {"", lines};
   }
 
 }
