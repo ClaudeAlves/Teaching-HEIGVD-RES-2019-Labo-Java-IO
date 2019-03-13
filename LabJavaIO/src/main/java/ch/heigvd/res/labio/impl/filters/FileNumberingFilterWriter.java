@@ -19,42 +19,57 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
-  private static int counter = 0;
-  private static boolean cloche = false;
+  private boolean start = true;
+  private int counter = 1;
+  private boolean cloche = false;
   public FileNumberingFilterWriter(Writer out) {
     super(out);
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for (int i = off; i < off + len; i++) {
+      write(str.charAt(i));
+    }
+
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    int augmente;
-    char numberFilteredCbuf = c
-    for (int i = 0; i < len; i++) {
-
+    for (int i = off; i < off + len; i++) {
+      write(cbuf[i]);
     }
   }
 
   @Override
   public void write(int c) throws IOException {
-    if(cloche) {
-      cloche = false;
-      if(c == '\n') {
 
+    if(start) {
+      super.write(counter++ + "\t", 0, 2);
+      start = false;
+    }
+
+
+    if (cloche) {
+      if (c != '\r') {
+        cloche = false;
+      }
+      if (c == '\n') {
+        super.write("\r\n" + counter + "\t", 0, 3 + String.valueOf(counter++).length());
+
+      } else {
+        super.write( "\r" + counter + "\t" + (char) c, 0, 3 + String.valueOf(counter++).length());
+      }
+    } else {
+      if (c == '\r') {
+        cloche = true;
+      } else if (c == '\n') {
+        super.write("\n" + counter + "\t", 0, 2 + String.valueOf(counter++).length());
+      } else {
+        super.write(c);
       }
     }
-    if((c == '\n' && cloche) || c == '\r') {
-      super.write( c + counter + "\t", 0, 3);
-    }else {
-      if( c == '\r') {
 
-      }
-      super.write(c);
-    }
   }
 
 }
