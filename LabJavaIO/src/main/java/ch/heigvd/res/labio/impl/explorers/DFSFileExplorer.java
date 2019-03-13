@@ -18,7 +18,7 @@ public class DFSFileExplorer implements IFileExplorer {
   @Override
   public void explore(File rootDirectory, IFileVisitor visitor) {
     visitor.visit(rootDirectory);
-    if(rootDirectory.exists()) {
+    if(rootDirectory.isDirectory()) {
       File[] rootChildren = rootDirectory.listFiles();
       Arrays.sort(rootChildren);
       for ( File f : rootChildren) {
