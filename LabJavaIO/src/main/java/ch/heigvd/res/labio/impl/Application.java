@@ -83,7 +83,7 @@ public class Application implements IApplication {
     for (int i = 0; i < numberOfQuotes; i++) {
       Quote quote = client.fetchQuote();
 
-      storeQuote(quote, "quote-" + numberOfQuotes + ".utf8");
+      storeQuote(quote, "quote-" + i + ".utf8");
       // There is a missing piece here! je crois que c'est good ici !
       LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
       for (String tag : quote.getTags()) {
@@ -141,7 +141,7 @@ public class Application implements IApplication {
 
         try {
           // ici gît une modif
-          writer.write(file.getPath());
+          writer.write(file.getPath() + "\n");
         } catch (IOException e) {
           e.printStackTrace();
         }
